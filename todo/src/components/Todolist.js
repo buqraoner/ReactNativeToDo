@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from "react-native";
+import { windowHeight, windowWidth } from "./util/Dimensions/Dimensions";
 
 // Custom components
 import Button from "./Button";
@@ -14,12 +14,12 @@ const TodoList = () => {
         {
             id: 1,
             title: "Learn React Native",
-            completed: false
+            completed: false,
         },
         {
             id: 2,
             title: "Learn Firebase",
-            completed: false
+            completed: true,
         },
         {
             id: 3,
@@ -44,46 +44,68 @@ const TodoList = () => {
             ]);
             setinputText("");   //inputText değişkenini boş yapar.
         }
-
     };
 
     const handleDeletePress = (id) => {
         setTodos(todos.filter(todo => todo.id !== id));
     };
 
+    const handleCompletePress = (id) => {
+        setTodos(todos.map(todo => {
+            if (todo.id === id) {
+                return {
+                    ...todo,
+                    completed: !todo.completed
+                }
+            }
+            return todo;
+        }));
+    };
+
+
+
 
 
     // console.log(todos);
 
     return (
-        <View>
-
-
-
-
+        <SafeAreaView style={styles.container}>
+            <View style={styles.Yapilacaklar}>
+                <Text style={styles.YapilacaklarText}>Yapılacaklar</Text>
+                <Text style={styles.TodosLong}>{todos.length}</Text>
+            </View>
             <FlatList
                 data={todos}
                 renderItem={({ item }) => (
-                    <View style={styles.taskContainer}>
-                        <Text style=
-                            {styles.taskText}
-                        >
-                            {item.title}
-                        </Text>
-                        <TouchableOpacity
-                            style={styles.TaskDelete}
-                            onPress={() => handleDeletePress(item.id)}
-                        >
-                            <Text
-                                style={styles.taskDeleteText}>
-                                X
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
-            />
+                    <TouchableOpacity onPress={() => handleCompletePress(item.id)}>
+                        <View style={{ backgroundColor: item.completed ? "lightslategrey" : "green" }}>
+                            <View style={styles.taskContainer}>
+                                <Text style={
+                                    {
+                                        fontSize: 20,
+                                        textDecorationLine: item.completed ? "line-through" : "none"
+                                    }
+                                }
+                                >
+                                    {item.title}
+                                </Text>
+                                <TouchableOpacity
+                                    style={styles.TaskDelete}
+                                    onPress={() => handleDeletePress(item.id)}
+                                >
+                                    <Text
+                                        style={styles.taskDeleteText}>
+                                        X
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
 
-            <View style={styles.TodoAddContainer}>
+                )
+                }
+            />
+            < View style={styles.TodoAddContainer} >
                 <Input
                     placeHolder="Enter task your here"
                     onChangeText={setinputText}
@@ -91,13 +113,17 @@ const TodoList = () => {
                 />
                 <Button style={styles.TodoAddButton}
                     text="Ekle" onPress={handleAddPress} />
-            </View>
-        </View>
+            </View >
+        </SafeAreaView >
     )
 }
 
 const styles = StyleSheet.create({
     /* Todolist için gerekli olan stil */
+    container: {
+        backgroundColor: "red",
+    },
+
 
     taskContainer: {
         padding: 10,
@@ -106,26 +132,30 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderBottomWidth: 1,
         height: 50,
+
     },
     taskText: {
         fontSize: 20,
     },
     TaskDelete: {
-        width: 23,
-        height: 23,
+        width: 30,
+        height: 30,
         borderRadius: 50,
         borderRadius: 13,
         justifyContent: "center",
         alignItems: "center",
 
+
     },
     taskDeleteText: {
+        textAlign: "center",
         backgroundColor: "red",
         fontSize: 17,
         borderRadius: 15,
         color: "white",
         height: 25,
-        
+        width: 25,
+
 
     },
     TodoAddContainer: {
@@ -136,6 +166,24 @@ const styles = StyleSheet.create({
         margin: 15,
 
 
+    },
+    Yapilacaklar: {
+        fontSize: 20,
+        justifyContent: "space-between",
+        flexDirection: "row",
+        marginBottom: 10,
+        marginTop: 20,
+
+    },
+    YapilacaklarText: {
+        fontSize: 25,
+        color: "orange",
+        fontWeight: "bold",
+    },
+    TodosLong: {
+        fontSize: 25,
+        color: "orange",
+        fontWeight: "bold",
     },
 
 
