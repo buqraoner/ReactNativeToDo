@@ -33,7 +33,7 @@ const TodoList = () => {
 
 
     const handleAddPress = () => {
-        if (inputText.length > 0) { // Boş text göndermemesi için
+        if (inputText.length > 0 && todos.length < 6) { // Boş text göndermemesi için
             setTodos([
                 ...todos,
                 {
@@ -63,6 +63,8 @@ const TodoList = () => {
     };
 
 
+    const todosLength =  todos.filter(todo => !todo.completed).length;
+
 
 
 
@@ -72,13 +74,21 @@ const TodoList = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.Yapilacaklar}>
                 <Text style={styles.YapilacaklarText}>Yapılacaklar</Text>
-                <Text style={styles.TodosLong}>{todos.length}</Text>
+                <Text style={styles.TodosLong}>({todosLength
+                   })</Text>
             </View>
             <FlatList
                 data={todos}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleCompletePress(item.id)}>
-                        <View style={{ backgroundColor: item.completed ? "lightslategrey" : "green" }}>
+                        <View style={
+                            {
+                                margin: 5,
+                                borderBottomColor: "black",
+                                borderBottomWidth: 1,
+                                backgroundColor: item.completed ? "#462F71" : "lightslategrey"
+                            }
+                        }>
                             <View style={styles.taskContainer}>
                                 <Text style={
                                     {
@@ -121,16 +131,15 @@ const TodoList = () => {
 const styles = StyleSheet.create({
     /* Todolist için gerekli olan stil */
     container: {
-        backgroundColor: "red",
+        flex: 1,
     },
-
 
     taskContainer: {
         padding: 10,
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 10,
-        borderBottomWidth: 1,
+        marginLeft: 10,
+        marginRight: 10,
         height: 50,
 
     },
@@ -144,7 +153,6 @@ const styles = StyleSheet.create({
         borderRadius: 13,
         justifyContent: "center",
         alignItems: "center",
-
 
     },
     taskDeleteText: {
@@ -166,24 +174,29 @@ const styles = StyleSheet.create({
         margin: 15,
 
 
+
     },
     Yapilacaklar: {
         fontSize: 20,
         justifyContent: "space-between",
         flexDirection: "row",
-        marginBottom: 10,
-        marginTop: 20,
+        marginBottom: 15,
+        marginTop: 15,
+        marginRight: 25,
+        marginLeft: 9,
 
     },
     YapilacaklarText: {
         fontSize: 25,
-        color: "orange",
+        color: "black",
         fontWeight: "bold",
     },
     TodosLong: {
         fontSize: 25,
-        color: "orange",
+        color: "black",
         fontWeight: "bold",
+
+
     },
 
 
