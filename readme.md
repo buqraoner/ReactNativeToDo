@@ -1,1 +1,1 @@
-![Alt Text](TodoApp.Gif)
+![](TodoApp.Gif)
